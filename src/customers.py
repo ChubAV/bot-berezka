@@ -1,8 +1,9 @@
 import logging
 
 import pika, sys, os
-from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, DATE_START, PATH_DIR_LOGS, ColorLogFormatter, DEBUG, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT
+from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, DATE_START, PATH_DIR_LOGS, ColorLogFormatter, DEBUG, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT,FAKE
 from .berezka_api import find_order_by_number, send_proposal
+import json
 
 logger = logging.getLogger('berezka-api-customer')
 logger.setLevel(logging.DEBUG)
@@ -32,7 +33,9 @@ def filterOrderName(order_name):
 def ws_callback(ch, method, properties, body):
         try:
             logger.info(f'Получили сообщение из очереди - > {WS_BROKER_QUEUE}, данные -> {body}')
-            order_number = body.decode('utf-8')
+            order_json = json.loads(body.decode('utf-8'))
+
+            order_number = order_json.get('order','')
             logger.debug(f'Попытка получить информацию и конкурсе на сайте березка')
             logger.warning(f'Фильтрация по номеру {order_number}')
             if not filterOrderNumber(order_number):
@@ -49,7 +52,7 @@ def ws_callback(ch, method, properties, body):
             else:
                 logger.debug(f'Конкурс прошел фильтрацию по тексту. Переходим к подаче предложения')
             logger.debug(f'Попытка отправить предложение по конкурсу')
-            result_proposal = send_proposal(order_json, fake=True)
+            result_proposal = send_proposal(order_json, fake=FAKE)
             logger.debug(f'Результат отправки  предложение {result_proposal}')
             
             return True

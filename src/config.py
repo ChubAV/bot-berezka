@@ -41,6 +41,7 @@ if os.path.exists(dotenv_path):
 PATH_DIR_LOGS = os.path.join(BASE_DIR, 'logs')
 
 DEBUG = os.getenv('DEBUG') if os.getenv('DEBUG') is not None else False
+FAKE = os.getenv('FAKE') if os.getenv('FAKE') is not None else False
 
 WS_BROKER_HOST = os.getenv('WS_BROKER_HOST') if os.getenv('WS_BROKER_HOST') is not None else 'localhost'
 WS_BROKER_QUEUE = os.getenv('WS_BROKER_QUEUE') if os.getenv('WS_BROKER_QUEUE') is not None else 'ws_berezka'
