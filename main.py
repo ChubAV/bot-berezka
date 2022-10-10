@@ -1,4 +1,5 @@
 from src.customers import ws_callback, ws_customer
+# from src.config import FAKE, DEBUG
 store = (
     # ('100014975122100014',False),
     ('100014975122100013',True),
@@ -19,3 +20,5 @@ if __name__ == '__main__':
     # test_root()
     print('starting ws_customer')
     ws_customer()
+    # print(FAKE)
+    # print(type(FAKE))
