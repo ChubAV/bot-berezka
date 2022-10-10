@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+          - 5672:5672
+    ws-berezka:
+        image: ws_berezka:latest
+        depends_on:
+          - rabbitmq
+        volumes:
+          - "./ws_berezka:/app"
+        command: "poetry run python3 main.py"        
+    tg-berezka:
+        image: tg_berezka:latest
+        depends_on:
+          - rabbitmq
+        volumes:
+          - "./tg-berezka:/app"
+        command: "poetry run python3 main.py"    
+    bot-berezka:
+        image: bot_berezka:latest
+        depends_on:
+          - rabbitmq
+        volumes:
+          - "./bot-berezka:/app"
+        command: "poetry run python3 main.py"
