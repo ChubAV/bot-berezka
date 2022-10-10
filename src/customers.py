@@ -1,28 +1,11 @@
 import logging
 
 import pika, sys, os
-from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, DATE_START, PATH_DIR_LOGS, ColorLogFormatter, DEBUG, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT,FAKE
+from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT,FAKE
 from .berezka_api import find_order_by_number, send_proposal
 import json
 
-logger = logging.getLogger('berezka-api-customer')
-logger.setLevel(logging.DEBUG)
-
-c_handler = logging.StreamHandler()
-c_format = ColorLogFormatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
-c_handler.setFormatter(c_format)
-logger.addHandler(c_handler)
-
-f_handler = logging.FileHandler(os.path.join(PATH_DIR_LOGS, f'berezka-api-customer-{DATE_START}.log'))
-f_format = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
-f_handler.setFormatter(f_format)
-f_handler.setLevel(logging.DEBUG)
-logger.addHandler(f_handler)
-
-if DEBUG:
-    c_handler.setLevel(logging.DEBUG)
-else:
-    c_handler.setLevel(logging.INFO)
+logger = logging.getLogger('api-berezka')
 
 def filterOrderNumber(order_number):
     return FILTER_ORDER_NUMBER in order_number

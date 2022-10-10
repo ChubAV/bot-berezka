@@ -1,30 +1,13 @@
 import logging
 import os
-from .config import ColorLogFormatter, PATH_DIR_LOGS, DEBUG, DATE_START, BEREZKA_TOKEN, BEREZKA_EXT_SYSTEM, BEREZKA_PRICE, SUPPLIER
+from .config import  BEREZKA_TOKEN, BEREZKA_EXT_SYSTEM, BEREZKA_PRICE, SUPPLIER
 import requests
 from requests.exceptions import RequestException
 import uuid
 from datetime import time
 import time
 
-logger = logging.getLogger('berezka.api')
-logger.setLevel(logging.DEBUG)
-
-c_handler = logging.StreamHandler()
-c_format = ColorLogFormatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
-c_handler.setFormatter(c_format)
-logger.addHandler(c_handler)
-
-f_handler = logging.FileHandler(os.path.join(PATH_DIR_LOGS, f'berezka-api-{DATE_START}.log'))
-f_format = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
-f_handler.setFormatter(f_format)
-f_handler.setLevel(logging.DEBUG)
-logger.addHandler(f_handler)
-
-if DEBUG:
-    c_handler.setLevel(logging.DEBUG)
-else:
-    c_handler.setLevel(logging.INFO)
+logger = logging.getLogger('api-berezka')
 
 class ExceptionBerezkaNot200(Exception):
     pass
