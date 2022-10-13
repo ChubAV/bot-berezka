@@ -70,3 +70,10 @@ FILTER_ORDER_NUMBER = '10001497512' # краснодар
 # FILTER_ORDER_NUMBER = '10042881212' # крым
 
 FILTER_ORDER_TEXT = ('арест', 'имуществ', 'реализ')
+
+
+EMAIL_ADMIN = os.getenv('EMAIL_ADMIN')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+SMTP_SERVER = os.getenv('SMTP_SERVER')
+SMTP_PORT = int(os.getenv('SMTP_PORT'))
+EMAIL_RECIPIENT = os.getenv('EMAIL_RECIPIENT')

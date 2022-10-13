@@ -1,9 +1,10 @@
 import logging
 
 import pika, sys, os
-from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT,FAKE
+from .config import WS_BROKER_HOST, WS_BROKER_QUEUE, FILTER_ORDER_NUMBER, FILTER_ORDER_TEXT,FAKE, EMAIL_ADMIN, EMAIL_PASSWORD, SMTP_SERVER, SMTP_PORT, EMAIL_RECIPIENT 
 from .berezka_api import find_order_by_number, send_proposal
 import json
+from notifications import Mail
 
 logger = logging.getLogger('api-berezka')
 
@@ -34,6 +35,13 @@ def ws_callback(ch, method, properties, body):
                 return False
             else:
                 logger.debug(f'Конкурс прошел фильтрацию по тексту. Переходим к подаче предложения')
+            
+            try:
+                mail = Mail(SMTP_SERVER, SMTP_PORT, EMAIL_ADMIN, EMAIL_PASSWORD)
+                mail.send([EMAIL_RECIPIENT,], 'Березка - Отправка предложения', f'Отправка предложения по конкурсу {order_number}')
+            except Exception as ex:
+                pass
+            
             logger.debug(f'Попытка отправить предложение по конкурсу')
             result_proposal = send_proposal(order_json, fake=FAKE)
             logger.debug(f'Результат отправки  предложение {result_proposal}')
